@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de Cuentos - Alfabetización 3º y 4º Grado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #8B7355 0%, #A0826D 50%, #8B7355 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Efecto de biblioteca de fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(0,0,0,.05) 35px, rgba(0,0,0,.05) 70px),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #5D4E37;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #8B7355;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .library-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .book-card {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFEFD5 100%);
+            border: 3px solid #8B7355;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #D2691E, #CD853F, #D2691E);
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-title {
+            color: #5D4E37;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .book-description {
+            color: #6B5D4F;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .book-info {
+            background: rgba(139, 115, 85, 0.1);
+            padding: 12px;
+            border-left: 4px solid #D2691E;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #5D4E37;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #D2691E, #CD853F);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(210, 105, 30, 0.3);
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #CD853F, #D2691E);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(210, 105, 30, 0.5);
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .grade-badge {
+            display: inline-block;
+            background: #8B7355;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: #5D4E37;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .footer-icon {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .library-icon {
+                font-size: 2em;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #5D4E37;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(93, 78, 55, 0.2);
+            border-top: 4px solid #D2691E;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="library-icon">📚</div>
+            <h1>Biblioteca de Cuentos</h1>
+            <p class="subtitle">Historias Mágicas para Alfabetización - 3º y 4º Grado</p>
+        </header>
+
+        <div class="books-grid" id="booksGrid">
+            <!-- Los libros se cargarán aquí dinámicamente -->
+        </div>
+
+        <footer>
+            <div class="footer-icon">✨</div>
+            <p><strong>Biblioteca Digital de Cuentos Educativos</strong></p>
+            <p>Diseñada para enriquecer la alfabetización de niños y niñas</p>
+            <p style="margin-top: 15px; font-size: 0.85em; color: #8B7355;">© 2026 Manus AI - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos de los cuentos
+        const cuentos = [
+            {
+                id: 1,
+                titulo: "El Jardín de las Letras Perdidas",
+                descripcion: "Leo y Sofía descubren un jardín mágico donde las letras crecen como flores. A través de cuidar estas plantas especiales, aprenden importantes reglas ortográficas que les ayudarán a escribir mejor.",
+                enfoque: "Reglas Ortográficas y Sinónimos",
+                archivo: "el_jardin_de_las_letras_perdidas.pdf",
+                icono: "🌸"
+            },
+            {
+                id: 2,
+                titulo: "El Misterio del Faro Silencioso",
+                descripcion: "Mateo y su gaviota parlanchina Pico investigan por qué el faro de Puerto Luz dejó de brillar. Resolviendo acertijos sobre sílabas, descubren cómo las palabras se dividen y se pronuncian correctamente.",
+                enfoque: "Separación de Sílabas y Acentuación",
+                archivo: "el_misterio_del_faro_silencioso.pdf",
+                icono: "🔦"
+            },
+            {
+                id: 3,
+                titulo: "La Nube que Coleccionaba Acentos",
+                descripcion: "Nubi, una pequeña nube, pierde todos los acentos que cuida. Con la ayuda de Clara, aprenden juntas la importancia de las tildes y cómo estas cambian el significado de las palabras.",
+                enfoque: "Acentuación y Tildes",
+                archivo: "la_nube_que_coleccionaba_acentos.pdf",
+                icono: "☁️"
+            }
+        ];
+
+        // Función para cargar los cuentos
+        function cargarCuentos() {
+            const grid = document.getElementById('booksGrid');
+            grid.innerHTML = '';
+
+            cuentos.forEach(cuento => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <div style="font-size: 2.5em; margin-bottom: 15px;">${cuento.icono}</div>
+                    <div class="grade-badge">3º y 4º Grado</div>
+                    <h2 class="book-title">${cuento.titulo}</h2>
+                    <p class="book-description">${cuento.descripcion}</p>
+                    <div class="book-info">
+                        <strong>Enfoque Educativo:</strong><br>
+                        ${cuento.enfoque}
+                    </div>
+                    <a href="${cuento.archivo}" download class="download-btn">
+                        📥 Descargar PDF
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Cargar cuentos cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', cargarCuentos);
+    </script>
+</body>
+</html>
